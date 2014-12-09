@@ -71,6 +71,12 @@ table.quickdate-calendar {
     border-bottom: 1px solid #ccc;
   }
 
+  tr.highlight-week {
+    &:hover {
+      background-color: darken(@calendar-bg-color, 10%);
+    }
+  }
+
   td {
     &:hover {
       background-color: darken(@calendar-bg-color, 10%);

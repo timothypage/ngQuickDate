@@ -86,6 +86,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
         scope.labelFormat = scope.dateFormat
         unless scope.disableTimepicker
           scope.labelFormat += " " + scope.timeFormat
+      if attrs.weekpicker
+        scope.weekpicker = true
       if attrs.iconClass && attrs.iconClass.length
         scope.buttonIconHtml = $sce.trustAsHtml("<i ng-show='iconClass' class='#{attrs.iconClass}'></i>")
 
@@ -287,7 +289,12 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() != ngModelCtrl.$viewValue.getTime()))
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
-      ngModelCtrl.$setViewValue(date)
+      if scope.weekpicker
+        ngModelCtrl.$setViewValue(
+          moment(date).endOf('week').subtract(1, 'day').toDate()
+        )
+      else
+        ngModelCtrl.$setViewValue(date)
       if closeCalendar
         scope.toggleCalendar(false)
       true
@@ -375,7 +382,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat='week in weeks'>
+                    <tr ng-repeat='week in weeks' ng-class="{'highlight-week': weekpicker}">
                       <td ng-mousedown='selectDate(day.date, true, true)' ng-click='$event.preventDefault()' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>

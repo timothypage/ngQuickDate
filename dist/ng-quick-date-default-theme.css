@@ -56,6 +56,9 @@ table.quickdate-calendar td {
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
+table.quickdate-calendar tr.highlight-week:hover {
+  background-color: #e6e6e6;
+}
 table.quickdate-calendar td:hover {
   background-color: #e6e6e6;
 }
