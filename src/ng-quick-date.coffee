@@ -88,6 +88,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
           scope.labelFormat += " " + scope.timeFormat
       if attrs.weekpicker
         scope.weekpicker = true
+      if attrs.dayOfWeek
+        scope.dayOfWeek = attrs.dayOfWeek
       if attrs.iconClass && attrs.iconClass.length
         scope.buttonIconHtml = $sce.trustAsHtml("<i ng-show='iconClass' class='#{attrs.iconClass}'></i>")
 
@@ -290,9 +292,14 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
       if scope.weekpicker
-        ngModelCtrl.$setViewValue(
-          moment(date).endOf('week').subtract(1, 'day').toDate()
-        )
+        if scope.dayOfWeek
+          ngModelCtrl.$setViewValue(
+            moment(date).day(scope.dayOfWeek).toDate()
+          )
+        else
+          ngModelCtrl.$setViewValue(
+            moment(date).endOf('week').subtract(1, 'day').toDate()
+          )
       else
         ngModelCtrl.$setViewValue(date)
       if closeCalendar
