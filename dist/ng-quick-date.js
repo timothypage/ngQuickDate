@@ -166,6 +166,7 @@
                   d.setHours(time[0] || 0);
                   d.setMinutes(time[1] || 0);
                   d.setSeconds(time[2] || 0);
+                  d.setMilliseconds(time[3] || 0);
                 }
                 selected = ngModelCtrl.$modelValue && d && datesAreEqual(d, ngModelCtrl.$modelValue);
                 today = datesAreEqual(d, new Date());
